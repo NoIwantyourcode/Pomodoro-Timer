@@ -1,5 +1,6 @@
 const clockCanvas = document.getElementById('clock');
 const clockCtx = clockCanvas.getContext('2d');
+let SessionLog = JSON.parse(localStorage.getItem('sessionLog') || '[]');
 let timeLeft = 25 * 60;
 let timerInterval = null;
 let isRunning = false;
@@ -13,7 +14,6 @@ function drawClock() {
     const seconds = now.getSeconds();
 
     clockCtx.clearRect(0, 0, 200, 200);
-
     clockCtx.beginPath();
     clockCtx.arc(100, 100, 90, 0, 2 * Math.PI);
     clockCtx.fillStyle = '#80a7cf';
@@ -96,6 +96,7 @@ document.getElementById('start').addEventListener('click', () => {
             isRunning = false;
 
             if (!Break) {
+                logSession('work')
                 numofBreaks++;
                 if (numofBreaks === 4) {
                     timeLeft = 15 * 60;
@@ -130,6 +131,16 @@ document.getElementById('reset').addEventListener('click', () => {
     timeLeft = 25 * 60;
     updateDisplay()
 })
+
+function logSession(type) {
+    console.log('logging session', type)
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString()
+    SessionLog.push({date, time, type});
+    console.log('SessionLog:', SessionLog)
+    localStorage.setItem('sessionLog', JSON.stringify(SessionLog));
+}
 
 setInterval(drawClock, 1000);
 drawClock()
