@@ -142,6 +142,45 @@ function logSession(type) {
     localStorage.setItem('sessionLog', JSON.stringify(SessionLog));
 }
 
+function getColor(count) {
+    if (count === 0) return '#eee';
+    if (count <= 2) return '#9be9a8';
+    if (count <= 4) return '#40c463';
+    return '#216e39'
+}
+
+function renderHeatmap() {
+    const heatmap = document.getElementById('heatmap');
+    heatmap.innerHTML = '';
+
+    for (let i=29; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateString = date.toLocaleDateString()
+
+        const count = SessionLog.filter(s => s.date === dateString && s.type === 'work').length
+
+        const box = document.createElement('div');
+        box.classList.add('heatmap-box');
+        box.style.background = getColor(count)
+        heatmap.appendChild(box);
+
+        box.addEventListener('mouseenter', (e) => {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.textContent = dateString + '-' + count + 'sessions';
+            tooltip.style.display = 'block';
+            tooltip.style.left = e.clientX + 10 + 'px';
+            tooltip.style.top = e.clientY + 10 + 'px';
+        });
+
+        box.addEventListener('mouseleave', () => {
+            document.getElementById('tooltip').style.display = 'none';
+        });
+    }
+}
+
+renderHeatmap()
+
 setInterval(drawClock, 1000);
 drawClock()
 

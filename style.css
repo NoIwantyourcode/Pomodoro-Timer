@@ -1,0 +1,25 @@
+#heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    width: 200px;
+    height: 100px
+}
+
+.heatmap-box {
+    width: 24px;
+    height: 24px;
+    background: #eee;
+    border-radius: 3px
+}
+
+#tooltip {
+    position: fixed;
+    background: #333;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    display: none;
+}
