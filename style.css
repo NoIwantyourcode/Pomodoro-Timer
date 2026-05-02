@@ -1,3 +1,25 @@
+:root {
+    --bg: #ffffff;
+    --surface: #f5f5f5;
+    --text: #111111;
+    --accent: #e05a4a;
+    --muted: #888;
+}
+
+[data-theme='dark'] {
+    --bg: #0e0e10;
+    --surface: #1a1a1f;
+    --text: #f0f0f0;
+    --accent: #f5c842;
+    --muted: #666;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: sans-serif;
+}
+
 #heatmap {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

@@ -179,6 +179,12 @@ function renderHeatmap() {
     }
 }
 
+document.getElementById('theme').addEventListener('click', () => {
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+})
+
 renderHeatmap()
 
 setInterval(drawClock, 1000);
