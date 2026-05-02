@@ -16,7 +16,7 @@ function drawClock() {
     clockCtx.clearRect(0, 0, 200, 200);
     clockCtx.beginPath();
     clockCtx.arc(100, 100, 90, 0, 2 * Math.PI);
-    clockCtx.fillStyle = '#80a7cf';
+    clockCtx.fillStyle = getComputedStyle(document.body).getPropertyValue('--surface');
     clockCtx.fill();
     clockCtx.strokeStyle = 'black';
     clockCtx.lineWidth = 3;
