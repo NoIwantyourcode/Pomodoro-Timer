@@ -97,6 +97,7 @@ function updateDisplay() {
 document.getElementById('start').addEventListener('click', () => {
     if (isRunning) return;
     isRunning = true;
+    playBeep(440, 0.2)
     clearInterval(timerInterval)
  
     timerInterval = setInterval(() => {
@@ -108,6 +109,7 @@ document.getElementById('start').addEventListener('click', () => {
             isRunning = false;
 
             if (!Break) {
+                playBeep(880, 0.5)
                 logSession('work')
                 numofBreaks++;
                 if (numofBreaks === 4) {
@@ -189,6 +191,24 @@ function renderHeatmap() {
             document.getElementById('tooltip').style.display = 'none';
         });
     }
+}
+
+function playBeep(frequency, duration) {
+    const audioCtx = new AudioContext;
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.frequency.value = frequency;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime)
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + duration);
 }
 
 document.getElementById('theme').addEventListener('click', () => {
