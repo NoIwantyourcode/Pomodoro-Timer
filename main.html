@@ -9,14 +9,21 @@
         <h1>Pomodoro Timer!</h1>
         <canvas id="clock" width="200" height="200"></canvas>
         <h2 id="sessionLabel">Work Session</h2>
+        <div id="settings">
+            <label>Work (mins): <input type="number" id="workTime" value="25" min="1" max="60"></label>
+            <label>Short Break (mins): <input type="number" id="shortBreak" value="5" min="1" max="30"></label>
+            <label>Long Break (mins): <input type="number" id="longBreak" value="15" min="1" max="60"></label>
+            <label><input type="checkbox" id="noBreaks">No breaks</label>
+            <button class="hover" id="apply">Apply</button>
+        </div>
         <p id="time"></p>
         <div class="buttons">
-            <button id="start">Start</button>
-            <button id="pause">Pause</button>
-            <button id="reset">Reset</button>
+            <button class="hover" id="start">Start</button>
+            <button class="hover" id="pause">Pause</button>
+            <button class="hover" id="reset">Reset</button>
         </div>
         <div id="heatmapContainer">
-            <p id="heatmapLabel">Past 30 days</p>
+            <p id="heatmapLabel">Your History is the Past 30 days!</p>
             <div id="heatmap"></div>
         </div>
         <div id="tooltip"></div>

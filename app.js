@@ -1,7 +1,10 @@
 const clockCanvas = document.getElementById('clock');
 const clockCtx = clockCanvas.getContext('2d');
 let SessionLog = JSON.parse(localStorage.getItem('sessionLog') || '[]');
-let timeLeft = 25 * 60;
+let workDuration = 25 * 60;
+let shortBreakDuration = 5 * 60;
+let longBreakDuration = 15 * 60;
+let timeLeft = workDuration;
 let timerInterval = null;
 let isRunning = false;
 let Break = false;
@@ -22,7 +25,7 @@ function drawClock() {
     clockCtx.lineWidth = 3;
     clockCtx.stroke();
 
-    const totalTime = Break ? (numofBreaks === 4 ? 15 * 60 : 5 * 60) : 25 * 60;
+    const totalTime = Break ? (numofBreaks === 4 ? longBreakDuration : shortBreakDuration) : workDuration;
     const progress = timeLeft / (60 * 60);
     const progressAngle = progress * 2 * Math.PI;
 
@@ -107,26 +110,33 @@ document.getElementById('start').addEventListener('click', () => {
         if (timeLeft === 0) {
             clearInterval(timerInterval);
             isRunning = false;
+            const noBreaks = document.getElementById('noBreaks').checked;
 
             if (!Break) {
-                playBeep(880, 0.5)
-                logSession('work')
-                numofBreaks++;
-                if (numofBreaks === 4) {
-                    timeLeft = 15 * 60;
-                    numofBreaks = 0;
+                playBeep(880, 0.5);
+                logSession('work');
+                if (noBreaks) {
+                    timeLeft = workDuration;
+                    document.getElementById('sessionLabel').textContent = 'Work Session';
                 } else {
-                    timeLeft = 5 * 60;
+                    numofBreaks++;
+                    if (numofBreaks === 4) {
+                        timeLeft = longBreakDuration;
+                        numofBreaks = 0;
+                    } else {
+                        timeLeft = shortBreakDuration;
+                    }
+                    Break = true;
+                    document.getElementById('sessionLabel').textContent = 'Break Time!';
                 }
-                Break = true;
-                document.getElementById('sessionLabel').textContent = 'Break Time!'
             } else {
-                timeLeft = 25 * 60;
+                timeLeft = workDuration;
                 Break = false;
-                document.getElementById('sessionLabel').textContent = 'Work Session'
+                document.getElementById('sessionLabel').textContent = 'Work Session';
             }
 
             updateDisplay();
+            drawClock();
         }
     }, 1000);
 });
@@ -142,7 +152,7 @@ document.getElementById('pause').addEventListener('click', () => {
 document.getElementById('reset').addEventListener('click', () => {
     clearInterval(timerInterval);
     isRunning = false;
-    timeLeft = 25 * 60;
+    timeLeft = workDuration;
     updateDisplay()
 })
 
@@ -217,9 +227,21 @@ document.getElementById('theme').addEventListener('click', () => {
     document.getElementById('theme').textContent = isDark ? 'Dark Mode' : 'Light Mode';
 })
 
-renderHeatmap()
+document.getElementById('apply').addEventListener('click', () => {
+    workDuration = parseInt(document.getElementById('workTime').value) * 60;
+    shortBreakDuration = parseInt(document.getElementById('shortBreak').value) * 60;
+    longBreakDuration = parseInt(document.getElementById('longBreak').value) * 60;
+
+    clearInterval(timerInterval);
+    isRunning = false;
+    Break = false;
+    timeLeft = workDuration;
+    updateDisplay();
+})
+
+renderHeatmap();
 
 setInterval(drawClock, 1000);
-drawClock()
+drawClock();
 
 updateDisplay();
