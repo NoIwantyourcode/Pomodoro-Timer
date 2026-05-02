@@ -22,6 +22,17 @@ function drawClock() {
     clockCtx.lineWidth = 3;
     clockCtx.stroke();
 
+    const totalTime = Break ? (numofBreaks === 4 ? 15 * 60 : 5 * 60) : 25 * 60;
+    const progress = timeLeft / (60 * 60);
+    const progressAngle = progress * 2 * Math.PI;
+
+    clockCtx.beginPath();
+    clockCtx.moveTo(100, 100);
+    clockCtx.arc(100, 100, 88, -Math.PI/2, -Math.PI/2 + progressAngle);
+    clockCtx.closePath();
+    clockCtx.fillStyle = 'rgba(245, 200, 66, 0.35)';
+    clockCtx.fill();
+
     const minuteAngle = (minutes/60) * 2 * Math.PI - Math.PI/2;
     clockCtx.beginPath();
     clockCtx.moveTo(100, 100);
@@ -72,6 +83,7 @@ function drawClock() {
     }
 
     console.log(hours, minutes);
+    console.log('timeLeft:', timeLeft, 'totalTime:', totalTime, 'Progress:', progress)
 }
 
 drawClock();
